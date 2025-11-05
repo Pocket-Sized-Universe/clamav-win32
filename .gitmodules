@@ -24,13 +24,13 @@
 	url = https://github.com/zlib-ng/zlib-ng.git
 [submodule "3rdparty/openssl"]
 	path = 3rdparty/openssl
-	url = ../openssl.git
+	url = https://github.com/clamwin/openssl.git
 [submodule "clamav"]
 	path = clamav
-	url = ../clamav.git
+	url = https://github.com/clamwin/clamav.git
 [submodule "3rdparty/zlib"]
 	path = 3rdparty/zlib
 	url = https://github.com/madler/zlib.git
 [submodule "3rdparty/unrar"]
 	path = 3rdparty/unrar
-	url = ../unrar
+	url = https://github.com/clamwin/unrar
