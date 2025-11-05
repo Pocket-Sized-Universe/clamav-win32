@@ -1,0 +1,46 @@
+name: Publish
+on:
+  push:
+    tags:
+      - '*.*.*'
+jobs:
+  Build:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    env:
+      REPO_NAME: ${{ github.repository }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v2
+
+      - name: Set up MinGW
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          platform: x64
+
+      - name: Setup Rustup
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build ClamWin
+        run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_TOOLCHAIN_FILE=$(pwd)/../cmake/toolchain-mingw-x64.cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="/tmp/clamav" ..
+          make install
+
+      - name: Zip ClamWin
+        run: |
+          cd "/tmp/clamav"
+          zip -r /tmp/ClamWin.zip *
+      
+      - name: Publish Plugin
+        uses: softprops/action-gh-release@v2
+        with:
+          files: /tmp/ClamWin.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
