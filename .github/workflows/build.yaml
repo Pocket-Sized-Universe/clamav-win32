@@ -8,12 +8,6 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    env:
-      REPO_NAME: ${{ github.repository }}
-      RUSTFLAGS: "-C link-arg=-Wl,--no-eh-frame-hdr"
-      CC: x86_64-w64-mingw32-gcc
-      CXX: x86_64-w64-mingw32-g++
-      CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER: x86_64-w64-mingw32-gcc
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -28,10 +22,9 @@ jobs:
         with:
           platform: x64
 
-      - name: Setup Rustup
-        uses: dtolnay/rust-toolchain@stable
+      - uses: moonrepo/setup-rust@v1
         with:
-          targets: x86_64-pc-windows-gnu
+          targets: 'x86_64-pc-windows-msvc,x86_64-pc-windows-gnu'
 
       - name: Build ClamWin
         run: |
