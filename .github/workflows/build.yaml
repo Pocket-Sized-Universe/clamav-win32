@@ -26,6 +26,14 @@ jobs:
         with:
           targets: 'x86_64-pc-windows-msvc,x86_64-pc-windows-gnu'
 
+      - name: Configure Cargo for cross-compilation
+        run: |
+          mkdir -p .cargo
+          cat > .cargo/config.toml << 'EOF'
+          [target.x86_64-pc-windows-gnu]
+          linker = "x86_64-w64-mingw32-gcc"
+          EOF
+
       - name: Build ClamWin
         run: |
           mkdir build
